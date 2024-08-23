@@ -82,7 +82,7 @@ System with Ubuntu 20.04 or later with at least 4 CPU cores, atleast 1 GPU, 64GB
    - Clone the repository to your local machine and navigate to the project directory by running:
      ```sh
      git clone https://github.com/pcdslab/UtilLLM_EPS.git
-     cd proj
+     cd UtilLLM_EPS
      ```
    - For more information, see [managing repositories](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
 
@@ -98,7 +98,7 @@ You are now ready to retrain the models and generate results.
 
 1. **Data Acquisition**:
    - To create dataset please see [MLSPred-Bench](https://github.com/pcdslab/MLSPred-Bench).
-   - To get processed dataset, please send an email request to **[research.saeedlab@gmail.com]**
+   - To get processed dataset, please send an email request to **[saeed.researchlab@gmail.com]**
 
 2. **Data Preparation**:
    - Once you have received the data, place the training data in the `data/training_data/` directory and the validation data in the `data/validation_data/` directory.
