@@ -89,6 +89,7 @@ System with Ubuntu 20.04 or later with at least 4 CPU cores, atleast 1 GPU, 64GB
 9. **Install Required Packages**:
    - Install the necessary Python packages by running:
      ```sh
+     pip install torch==2.4.0 torchvision==0.19.0 torchaudio==2.4.0 --index-url https://download.pytorch.org/whl/cu118
      python3 -m pip install -r requirements.txt
      ```
 
