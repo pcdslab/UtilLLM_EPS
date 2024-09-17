@@ -73,29 +73,44 @@ def create_excel(swin_m,mit_m,longfor_m,resnet_m):
     for i in range(1, 13):
         sheet[f'A{i+2}'] = i
         sheet[f'A{i+2}'].alignment = center_alignment
-        sheet[f'A{i+2}'].border = thin_border
+        # sheet[f'A{i+2}'].border = thin_border
         
         sheet[f'B{i+2}'] = swin_m[i-1][0]
         sheet[f'B{i+2}'].number_format = '0.00%'
         sheet[f'C{i+2}'] = swin_m[i-1][1]
+        sheet[f'C{i+2}'].number_format = '0.00%'
         sheet[f'D{i+2}'] = swin_m[i-1][2]
+        sheet[f'D{i+2}'].number_format = '0.00%'
 
-        sheet[f'E{i}'] = mit_m[i-1][0]
-        sheet[f'F{i}'] = mit_m[i-1][1]
-        sheet[f'G{i}'] = mit_m[i-1][2]
+        sheet[f'E{i+2}'] = mit_m[i-1][0]
+        sheet[f'E{i+2}'].number_format = '0.00%'
+        sheet[f'F{i+2}'] = mit_m[i-1][1]
+        sheet[f'F{i+2}'].number_format = '0.00%'
+        sheet[f'G{i+2}'] = mit_m[i-1][2]
+        sheet[f'G{i+2}'].number_format = '0.00%'
 
-        sheet[f'H{i}'] = longfor_m[i-1][0]
-        sheet[f'I{i}'] = longfor_m[i-1][1]
-        sheet[f'J{i}'] = longfor_m[i-1][2]
+        sheet[f'H{i+2}'] = longfor_m[i-1][0]
+        sheet[f'H{i+2}'].number_format = '0.00%'
+        sheet[f'I{i+2}'] = longfor_m[i-1][1]
+        sheet[f'I{i+2}'].number_format = '0.00%'
+        sheet[f'J{i+2}'] = longfor_m[i-1][2]
+        sheet[f'J{i+2}'].number_format = '0.00%'
 
-        sheet[f'K{i}'] = resnet_m[i-1][0]
-        sheet[f'L{i}'] = resnet_m[i-1][1]
-        sheet[f'M{i}'] = resnet_m[i-1][2]
+        sheet[f'K{i+2}'] = resnet_m[i-1][0]
+        sheet[f'K{i+2}'].number_format = '0.00%'
+        sheet[f'L{i+2}'] = resnet_m[i-1][1]
+        sheet[f'L{i+2}'].number_format = '0.00%'
+        sheet[f'M{i+2}'] = resnet_m[i-1][2]
+        sheet[f'M{i+2}'].number_format = '0.00%'
     
     sheet[f'A15'] = 'Avg'
     sheet[f'A15'].font = bold_font
     sheet[f'A15'].alignment = center_alignment
-    
+    lis = ["B","C","D","E","F","G","H","I","J","K","L","M"]
+    for ch in lis:
+        sheet[f'{ch}15'] = f"=ROUND(AVERAGE({ch}3:{ch}14),4)"
+        sheet[f'{ch}15'].number_format = '0.00%'    
+
     
     # Save the workbook
     workbook.save('model_performance.xlsx')
@@ -137,7 +152,7 @@ def get_majority_vote_pred(pred_lab):
     new_pred = []
     chunk_size=20
     for i in range(0,len(pred_lab), chunk_size):
-        chunk = pred_labels[i:i + chunk_size]
+        chunk = pred_lab[i:i + chunk_size]
         result = check_ones(chunk)
         new_pred.append(result)
     return new_pred
@@ -148,9 +163,11 @@ def get_acc_sen_spe_llms(prob_lab_paths,bm_num):
     else:
         pred_probs = pd.read_csv(prob_lab_paths[0],header=None).values.flatten()
     true_labels = pd.read_csv(prob_lab_paths[1],header=None).values.flatten()
+    print(f"len of true lables {len(true_labels)} len of pred_probs {len(pred_probs)}")
     
     pred_labels = (pred_probs >= 0.5).astype(int)
     majority_pred = get_majority_vote_pred(pred_labels)
+    print(f"len of true lables {len(true_labels)} len of pred_probs {len(majority_pred)}")
     
     cm = confusion_matrix(true_labels, majority_pred)
     TN, FP, FN, TP = cm.ravel()
@@ -206,3 +223,4 @@ for i in range(1,13):
                          load_csv_file(file1_label_LLM,labels_file_name_LLM,base_path_longformer_custom,base_path_longformer)),i))
 
 #resnet remaining and putting them into excel is remaning
+create_excel(Swinv2_metrics,MIT_metrics,Longfor_metrics,resnet_metrics)
